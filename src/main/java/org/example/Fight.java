@@ -170,8 +170,8 @@ public class Fight {
         if (player.getHealth() > 0) {
             action.addPoints(player);
             text = "Победа на вашей стороне";
-          //  MusicDialog dialog = new MusicDialog(null, "Приветствие", true);
-            //dialog.setVisible(true);
+            MusicDialog dialog = new MusicDialog(null, "Победа", true);
+            dialog.setVisible(true);
             // MusicDialog musicPlayer = new MusicDialog();
            // musicPlayer.playMusic();
         }
