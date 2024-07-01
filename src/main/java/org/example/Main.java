@@ -6,7 +6,7 @@ package org.example;
 
 /**
  *
- * @author alina
+ * @author Sofi
  */
 public class Main {
 

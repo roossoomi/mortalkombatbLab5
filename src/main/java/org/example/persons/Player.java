@@ -3,7 +3,7 @@ package org.example.persons;
 import org.example.Item;
 
 public class Player extends Fighter {
-    
+
     private int points;
     private int experience;
     private int nextLevelExperience;
@@ -43,6 +43,7 @@ public class Player extends Fighter {
     public Item[] getItems() {
         return items;
     }
+
 
     public void setItems(Item[] items) {
         this.items = items;

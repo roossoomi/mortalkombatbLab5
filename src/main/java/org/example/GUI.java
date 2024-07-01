@@ -21,7 +21,17 @@ import javax.sound.sampled.Clip;
 public class GUI extends javax.swing.JFrame {
 
     Mediator mediator;
-    Game game = new Game();
+    Game game;
+    private Player player;
+
+    {
+        try {
+            game = new Game();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     Fight fight = new Fight();
     int locationsNumber = 0;
     Item[] items = new Item[3];
@@ -156,6 +166,10 @@ public class GUI extends javax.swing.JFrame {
         mkLabel = new javax.swing.JLabel();
         startButton = new javax.swing.JButton();
         seeResultsButton = new javax.swing.JButton();
+        devPanelButton = new javax.swing.JButton();
+        devMenu = new JPopupMenu();
+        fatalBlowMenuItem = new JMenuItem("Смертельный удар");
+        weakHealthMenuItem = new JMenuItem("Хилое здоровье");
 
         fightPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -934,7 +948,7 @@ public class GUI extends javax.swing.JFrame {
 
         setLocationsLabel.setText("Введите количество локаций, которое хотите пройти");
 
-        setLocationsField.setText("2");
+        setLocationsField.setText("1");
         setLocationsField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setLocationsFieldActionPerformed(evt);
@@ -944,7 +958,7 @@ public class GUI extends javax.swing.JFrame {
         startWithLocationsButton.setText("Начать игру");
         startWithLocationsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ithLocationsButtonActionPerformed(evt);
+                ithLocationsButtonActionPerformed(evt, 1);
             }
         });
 
@@ -1129,7 +1143,29 @@ public class GUI extends javax.swing.JFrame {
                 seeResultsButtonActionPerformed(evt);
             }
         });
+        devPanelButton.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        devPanelButton.setText("Панель разработчика");
+        devPanelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                devPanelButtonActionPerformed(evt);
+            }
+        });
 
+        // Настройка выпадающего меню
+        fatalBlowMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                fatalBlowActionPerformed(evt);
+            }
+        });
+
+        weakHealthMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                weakHealthActionPerformed(evt);
+            }
+        });
+
+        devMenu.add(fatalBlowMenuItem);
+        devMenu.add(weakHealthMenuItem);
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
@@ -1144,6 +1180,10 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(159, 159, 159)
                 .addComponent(mkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(devPanelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(21, 21, 21))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1154,7 +1194,9 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(seeResultsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                .addGap(30, 30, 30)
+                    .addComponent(devPanelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1178,7 +1220,24 @@ public class GUI extends javax.swing.JFrame {
         setLocationsFrame.setVisible(true);
         setLocationsFrame.setBounds(300, 200, 430, 350);
     }//GEN-LAST:event_startButtonActionPerformed
+    private void devPanelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        devMenu.show(devPanelButton, devPanelButton.getWidth() / 2, devPanelButton.getHeight() / 2);
+    }
 
+    private void fatalBlowActionPerformed(java.awt.event.ActionEvent evt) {
+        ithLocationsButtonActionPerformed(evt, 3);
+        /*if (player != null) {
+            JOptionPane.showMessageDialog(this, "Смертельный удар активирован. Урон установлен на 200."); // Возможно, следует установить урон на 200
+            startButtonActionPerformed(evt); // Похоже на запуск игры, возможно, нужно проверить этот метод
+        } else {
+            JOptionPane.showMessageDialog(this, "Игрок не найден.");
+        }*/
+    }
+
+
+    private void weakHealthActionPerformed(java.awt.event.ActionEvent evt) {
+        ithLocationsButtonActionPerformed(evt, 2);
+    }
     private void attackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attackButtonActionPerformed
         game.fight.hit(1, game.getResults(), locationsNumber, game.getEnemies());
     }//GEN-LAST:event_attackButtonActionPerformed
@@ -1316,7 +1375,7 @@ public class GUI extends javax.swing.JFrame {
             setLocationsField.setText(String.valueOf(locationCount));
         }
     }
-    private void ithLocationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startWithLocationsButtonActionPerformed
+    private void ithLocationsButtonActionPerformed(java.awt.event.ActionEvent evt, int a) {//GEN-FIRST:event_startWithLocationsButtonActionPerformed
         //fight.reset(fight.setEnemies());
         String text = setLocationsField.getText();
         try {
@@ -1329,7 +1388,7 @@ public class GUI extends javax.swing.JFrame {
             locationLabel.setText("Текущая локация: " + "1" + "/" + this.locationsNumber);
 
             //locationLabel.setText("Текущая локация: " + game.fight.location.getCurrentLocation() + "/" + this.locationsNumber);
-            game.fight.setPlayer(game.newPlayer(mediator, items));
+            game.fight.setPlayer(game.newPlayer(mediator, items,a));
             game.fight.location.setEnemiesAtLocation(game.fight.getPlayer().getLevel());
             fightFrame.setVisible(true);
             fightFrame.setSize(1000, 700);
@@ -1508,6 +1567,10 @@ public class GUI extends javax.swing.JFrame {
    // private JTextField setLocationsField;
     private JButton increaseLocationsButton;
     private JButton decreaseLocationsButton;
+    private javax.swing.JButton devPanelButton; // Новая кнопка "Панель разработчика"
+    private JPopupMenu devMenu; // Выпадающее меню для опций "Смертельный удар" и "Хилое здоровье"
+    private JMenuItem fatalBlowMenuItem;
+    private JMenuItem weakHealthMenuItem;
 
 
     // End of variables declaration//GEN-END:variables

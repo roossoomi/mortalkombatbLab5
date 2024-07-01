@@ -1,14 +1,19 @@
 package org.example;
 
-import org.example.actions.FightAction;
 import org.example.persons.Enemy;
 import org.example.persons.Fighter;
 import org.example.persons.Player;
+import org.example.actions.*;
 
 import javax.swing.*;
+import java.awt.*;
 
+/**
+ * Класс, который выполняет роль посредника между компонентами GUI и игровой логикой.
+ */
 public class Mediator {
 
+    // GUI компоненты
     private final JLabel enemyHealthLabel;
     private final JLabel playerHealthLabel;
     private final JLabel pointsValueLabel;
@@ -24,32 +29,26 @@ public class Mediator {
     private final JLabel playerDebuffLabel;
     private final JLabel enemyActionLabel;
     private final JLabel GIFLabel;
-    
     private final JProgressBar playerHealthBar;
     private final JProgressBar enemyHealthBar;
-
     private final JDialog endFightDialog;
     private final JDialog endGameDialog;
     private final JDialog endGameWithoutLadderDialog;
     private final JDialog cantUseItemDialog;
     private final JDialog itemsBagDialog;
-
     private final JFrame fightFrame;
-
     private final JRadioButton firstItemButton;
     private final JRadioButton secondItemButton;
     private final JLabel thirdItemButton;
-
     private final JTextField enterNameField;
-
     private final JTable recordsTable;
 
     public Mediator(JLabel enemyHealthLabel, JLabel playerHealthLabel, JDialog endFightDialog, JLabel pointsValueLabel, JLabel experienceValueLabel,
-            JLabel playerLevelLabel, JLabel enemyLevelLabel, JLabel playerDamageValueLabel, JLabel endRoundLabel, JProgressBar playerHealthBar,
-            JProgressBar enemyHealthBar, JDialog endGameDialog, JDialog endGameWithoutLadderDialog, JFrame fightFrame, JLabel enemyDebuffLabel,
-            JLabel victoryLabel, JLabel endGameWithoutLadderTitlleLabel, JLabel playerActionLabel, JLabel playerDebuffLabel, JLabel enemyActionLabel,
-            JRadioButton firstItemButton, JRadioButton secondItemButton, JLabel thirdItemButton, JTextField enterNameField, JTable recordsTable,
-            JDialog cantUseItemDialog, JDialog itemsBagDialog, JLabel GIFLabel) {
+                    JLabel playerLevelLabel, JLabel enemyLevelLabel, JLabel playerDamageValueLabel, JLabel endRoundLabel, JProgressBar playerHealthBar,
+                    JProgressBar enemyHealthBar, JDialog endGameDialog, JDialog endGameWithoutLadderDialog, JFrame fightFrame, JLabel enemyDebuffLabel,
+                    JLabel victoryLabel, JLabel endGameWithoutLadderTitlleLabel, JLabel playerActionLabel, JLabel playerDebuffLabel, JLabel enemyActionLabel,
+                    JRadioButton firstItemButton, JRadioButton secondItemButton, JLabel thirdItemButton, JTextField enterNameField, JTable recordsTable,
+                    JDialog cantUseItemDialog, JDialog itemsBagDialog, JLabel GIFLabel) {
 
         this.enemyHealthLabel = enemyHealthLabel;
         this.playerHealthLabel = playerHealthLabel;
@@ -81,29 +80,48 @@ public class Mediator {
         this.GIFLabel = GIFLabel;
     }
 
+    /**
+     * Устанавливает тексты действий игрока и врага.
+     *
+     * @param enemy       враг
+     * @param player      игрок
+     * @param enemyAction действие врага
+     * @param playerAction действие игрока
+     */
     public void setActionLabels(Fighter enemy, Fighter player, FightAction enemyAction, FightAction playerAction) {
         playerActionLabel.setText(player.getName() + " uses " + playerAction.getType());
         enemyActionLabel.setText(enemy.getName() + " use " + enemyAction.getType());
     }
 
+    /**
+     * Устанавливает метку дебаффа игрока или врага.
+     *
+     * @param player игрок или враг
+     * @param a      флаг наличия дебаффа
+     */
     public void setDebuffLabel(Fighter player, boolean a) {
         if (a) {
             switch (player.getName()) {
                 case "You" ->
-                    playerDebuffLabel.setText(player.getName() + " are debuffed for " + player.getMovesWithDebuff()+ " turns");
+                        playerDebuffLabel.setText(player.getName() + " are debuffed for " + player.getMovesWithDebuff()+ " turns");
                 default ->
-                    enemyDebuffLabel.setText(player.getName() + " is debuffed for " + player.getMovesWithDebuff()+ " turns");
+                        enemyDebuffLabel.setText(player.getName() + " is debuffed for " + player.getMovesWithDebuff()+ " turns");
             }
         } else {
             switch (player.getName()) {
                 case "You" ->
-                    playerDebuffLabel.setText("");
+                        playerDebuffLabel.setText("");
                 default ->
-                    enemyDebuffLabel.setText("");
+                        enemyDebuffLabel.setText("");
             }
         }
     }
 
+    /**
+     * Устанавливает полосу здоровья игрока или врага.
+     *
+     * @param player игрок или враг
+     */
     public void setHealthBar(Fighter player) {
         switch (player.getName()) {
             case "You" -> {
@@ -122,20 +140,43 @@ public class Mediator {
             }
         }
     }
+
+    /**
+     * Устанавливает максимальное значение полосы здоровья игрока.
+     *
+     * @param player игрок
+     */
     public void setPlayerMaxHealthBar(Player player){
         playerHealthBar.setMaximum(player.getMaxHealth());
     }
+
+    /**
+     * Устанавливает максимальное значение полосы здоровья врага.
+     *
+     * @param enemy враг
+     */
     public void setEnemyMaxHealthBar(Enemy enemy){
         enemyHealthBar.setMaximum(enemy.getMaxHealth());
     }
 
+    /**
+     * Восстанавливает игрока после смерти.
+     *
+     * @param player игрок
+     * @param items  массив предметов
+     */
     public void revive(Player player, Item[] items) {
         playerHealthLabel.setText(player.getHealth() + "/" + player.getMaxHealth());
         thirdItemButton.setText(items[2].getName() + ", " + items[2].getCount() + " шт");
         playerActionLabel.setText("Вы воскресли");
-        //System.out.println("Воскресли");
     }
 
+    /**
+     * Отображает окончание игры.
+     *
+     * @param text текст окончания
+     * @param a    флаг победы
+     */
     public void gameEnding(String text, boolean a) {
         if (a) {
             endGameDialog.setVisible(true);
@@ -149,24 +190,48 @@ public class Mediator {
         fightFrame.dispose();
     }
 
+    /**
+     * Отображает окно окончания битвы.
+     */
     public void setEndFightDialog() {
         endFightDialog.setVisible(true);
         endFightDialog.setBounds(300, 150, 700, 600);
     }
 
+    /**
+     * Устанавливает текст конца раунда.
+     *
+     * @param text текст конца раунда
+     */
     public void setRoundEndText(String text) {
         endRoundLabel.setText(text);
     }
-    
+
+    /**
+     * Открывает диалоговое окно для невозможности использования предмета.
+     */
     public void openCantUseItemDialog(){
         cantUseItemDialog.setVisible(true);
         cantUseItemDialog.setBounds(300, 200, 400, 300);
     }
+
+    /**
+     * Устанавливает тексты для предметов в сумке.
+     *
+     * @param items массив предметов
+     */
     public void setBagText( Item[] items){
         firstItemButton.setText(items[0].getName()+", "+items[0].getCount()+" шт");
         secondItemButton.setText(items[1].getName()+", "+items[1].getCount()+" шт");
         thirdItemButton.setText(items[2].getName()+", "+items[2].getCount()+" шт");
     }
+
+    /**
+     * Устанавливает тексты здоровья игрока и врага.
+     *
+     * @param player игрок
+     * @param enemy  враг
+     */
     public void setRoundTexts(Player player, Enemy enemy) {
         if (enemy.getHealth() >= 0) {
             enemyHealthLabel.setText((enemy.getHealth()) + "/" + (enemy.getMaxHealth()));
@@ -179,6 +244,14 @@ public class Mediator {
             playerHealthLabel.setText("0/" + (player.getMaxHealth()));
         }
     }
+
+    /**
+     * Устанавливает новые тексты в начале раунда.
+     *
+     * @param player игрок
+     * @param enemy  враг
+     * @param items  массив предметов
+     */
     public void setNewRoundTexts(Player player, Enemy enemy, Item[] items){
         playerActionLabel.setText("");
         enemyActionLabel.setText("");
@@ -191,6 +264,12 @@ public class Mediator {
         playerDamageValueLabel.setText(Integer.toString(player.getDamage()));
         setBagText(items);
     }
+
+    /**
+     * Устанавливает GIF анимацию в зависимости от результата битвы.
+     *
+     * @param a флаг победы
+     */
     public void setGIF(boolean a) {
         if (a) {
             GIFLabel.setIcon(loadIcon("win.gif"));
@@ -199,6 +278,12 @@ public class Mediator {
         }
     }
 
+    /**
+     * Загружает иконку из ресурсов.
+     *
+     * @param path путь к файлу с иконкой
+     * @return ImageIcon объект иконки
+     */
     private ImageIcon loadIcon(String path) {
         java.net.URL imgURL = getClass().getClassLoader().getResource(path);
         if (imgURL != null) {
