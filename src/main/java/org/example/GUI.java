@@ -173,7 +173,7 @@ public class GUI extends javax.swing.JFrame {
 
         fightPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        attackButton.setBackground(new java.awt.Color(255, 0, 0));
+        attackButton.setBackground(new java.awt.Color(226, 155, 139));
         attackButton.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
         attackButton.setText("Атаковать");
         attackButton.addActionListener(new java.awt.event.ActionListener() {
@@ -182,7 +182,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        blockButton.setBackground(new java.awt.Color(255, 204, 0));
+        blockButton.setBackground(new java.awt.Color(198, 226, 139));
         blockButton.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
         blockButton.setText("Защититься");
         blockButton.addActionListener(new java.awt.event.ActionListener() {
@@ -192,12 +192,12 @@ public class GUI extends javax.swing.JFrame {
         });
 
         playerHealthBar.setBackground(new java.awt.Color(204, 204, 204));
-        playerHealthBar.setForeground(new java.awt.Color(51, 255, 51));
+        playerHealthBar.setForeground(new java.awt.Color(139, 210, 226));
         playerHealthBar.setMaximum(80);
         playerHealthBar.setMinimum(-1);
 
         enemyHealthBar.setBackground(new java.awt.Color(204, 204, 204));
-        enemyHealthBar.setForeground(new java.awt.Color(0, 255, 0));
+        enemyHealthBar.setForeground(new java.awt.Color(139, 210, 226));
         enemyHealthBar.setMinimum(-1);
 
         enemyHeroLabel.setBackground(new java.awt.Color(0, 0, 0));
@@ -280,7 +280,7 @@ public class GUI extends javax.swing.JFrame {
         stunLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
         stunLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        itemsButton.setBackground(new java.awt.Color(174, 183, 106));
+        itemsButton.setBackground(new java.awt.Color(226, 139, 184));
         itemsButton.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
         itemsButton.setText("Предметы");
         itemsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -297,9 +297,9 @@ public class GUI extends javax.swing.JFrame {
         playerActionLabel.setForeground(new java.awt.Color(204, 0, 0));
         playerActionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        debuffButton.setBackground(new java.awt.Color(51, 51, 255));
+        debuffButton.setBackground(new java.awt.Color(139, 143, 226));
         debuffButton.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
-        debuffButton.setText("Дебаффнуть");
+        debuffButton.setText("Ослабить");
         debuffButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 debuffButtonActionPerformed(evt);
