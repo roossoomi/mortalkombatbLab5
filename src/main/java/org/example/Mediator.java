@@ -191,5 +191,21 @@ public class Mediator {
         playerDamageValueLabel.setText(Integer.toString(player.getDamage()));
         setBagText(items);
     }
-    
+    public void setGIF(boolean a) {
+        if (a) {
+            GIFLabel.setIcon(loadIcon("win.gif"));
+        } else {
+            GIFLabel.setIcon(loadIcon("loh.gif"));
+        }
+    }
+
+    private ImageIcon loadIcon(String path) {
+        java.net.URL imgURL = getClass().getClassLoader().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
 }

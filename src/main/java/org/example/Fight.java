@@ -119,7 +119,8 @@ public class Fight {
         GameActions action = new GameActions();
         mediator.setEndFightDialog();
         if (player.getHealth() > 0) {
-            mediator.setRoundEndText("You win");
+            mediator.setRoundEndText("Вы выиграли!");
+            mediator.setGIF(true);
             if ("Boss".equals(enemy.getName())) {
                 action.addItems(40, 30, 10, player.getItems());
                 action.addPointsBoss(player);
@@ -129,8 +130,9 @@ public class Fight {
                 action.addPoints(player);
             }
         } else {
-            mediator.setRoundEndText(enemy.getName() + " win");
+            mediator.setRoundEndText(enemy.getName() + " обыграл");
             endFinalRound(results, enemiesList);
+            mediator.setGIF(false);
         }
     }
 
@@ -152,9 +154,9 @@ public class Fight {
     }
     public Enemy[] setEnemies() {
         Enemy[] enemies = new Enemy[5];
-        enemies[0] = new Enemy("Baraka", 1, 100, 12);
-        enemies[1] = new Enemy("Sub-Zero", 1, 60, 16);
-        enemies[2] = new Enemy("Liu Kang", 1, 70, 20);
+        enemies[0] = new Enemy("Kitana", 1, 100, 12);
+        enemies[1] = new Enemy("Sub Zero", 1, 60, 16);
+        enemies[2] = new Enemy("Milina", 1, 70, 20);
         enemies[3] = new Enemy("Sonya Blade", 1, 80, 16);
         enemies[4] = new Enemy("Boss", 3, 100, 30);
         return enemies;
@@ -168,6 +170,10 @@ public class Fight {
         if (player.getHealth() > 0) {
             action.addPoints(player);
             text = "Победа на вашей стороне";
+          //  MusicDialog dialog = new MusicDialog(null, "Приветствие", true);
+            //dialog.setVisible(true);
+            // MusicDialog musicPlayer = new MusicDialog();
+           // musicPlayer.playMusic();
         }
         boolean top = false;
         if (results == null || results.isEmpty()) {

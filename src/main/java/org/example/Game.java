@@ -22,9 +22,9 @@ public class Game {
     }
 
     public void setEnemies() {
-        enemies[0] = new Enemy("Baraka", 1, 100, 12);
+        enemies[0] = new Enemy("Kitana", 1, 100, 12);
         enemies[1] = new Enemy("Sub-Zero", 1, 60, 16);
-        enemies[2] = new Enemy("Liu Kang", 1, 70, 20);
+        enemies[2] = new Enemy("Milina", 1, 70, 20);
         enemies[3] = new Enemy("Sonya Blade", 1, 80, 16);
         enemies[4] = new Enemy("Boss", 3, 100, 30);
         fight.location.setFullEnemiesList(enemies);
@@ -35,7 +35,7 @@ public class Game {
     }
 
     public Player newPlayer(Mediator mediator, Item[] items) {
-        Player player = new Player(0, 80, 16);
+        Player player = new Player(0, 80, 160);
         mediator.setHealthBar(player);
         mediator.setPlayerMaxHealthBar(player);
         player.setItems(items);

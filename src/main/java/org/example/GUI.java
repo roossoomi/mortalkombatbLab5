@@ -1,12 +1,22 @@
 package org.example;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.advanced.AdvancedPlayer;
 import org.example.persons.Player;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class GUI extends javax.swing.JFrame {
 
@@ -18,7 +28,9 @@ public class GUI extends javax.swing.JFrame {
     String nameButton = "";
 
     public GUI() {
+
         initComponents();
+        //MusicPlayer musicPlayer = new MusicPlayer("final.mp3");
         try {
             game.loadResultsFromExcel();
         } catch (IOException ex) {
@@ -49,10 +61,16 @@ public class GUI extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
 
+        // Load the audio file into a byte array once
+
+    private void initComponents() {
+        increaseLocationsButton = new JButton("Increase");
+        decreaseLocationsButton = new JButton("Decrease");
+        startWithLocationsButton = new JButton("Start");
         fightFrame = new javax.swing.JFrame();
         fightPanel = new javax.swing.JPanel();
+        playButton = new JButton();
         playerIconLabel = new javax.swing.JLabel();
         attackButton = new javax.swing.JButton();
         blockButton = new javax.swing.JButton();
@@ -529,7 +547,8 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        endGamePanel.setBackground(new java.awt.Color(255, 204, 255));
+        endGamePanel.setBackground(new java.awt.Color(200, 204, 255));
+       // musicPlayer.playMusic();
 
         victoryLabel.setFont(new java.awt.Font("Comic Sans MS", 3, 24)); // NOI18N
         victoryLabel.setForeground(new java.awt.Color(255, 0, 0));
@@ -925,53 +944,95 @@ public class GUI extends javax.swing.JFrame {
         startWithLocationsButton.setText("Начать игру");
         startWithLocationsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startWithLocationsButtonActionPerformed(evt);
+                ithLocationsButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout setLocationsPanelLayout = new javax.swing.GroupLayout(setLocationsPanel);
+
+
+            setLocationsLabel = new JLabel("<html>Установите количество локаций, которое хотите пройти.<br>На каждой локации генерируется от 1 до 3 врагов, в конце каждой локации Вас ждет босс.<br>Успехов!</html>");
+            setLocationsField = new JTextField(String.valueOf(locationCount));
+            setLocationsField.setEditable(false); // disable manual input
+
+            increaseLocationsButton = new JButton("+");
+            decreaseLocationsButton = new JButton("-");
+
+            // Add action listeners to buttons
+        increaseLocationsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                increaseLocationsButtonActionPerformed(evt);
+            }
+        });
+
+        decreaseLocationsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                decreaseLocationsButtonActionPerformed(evt);
+            }
+        });
+
+        // Panel Layout
+        setLocationsPanel = new JPanel();
+        GroupLayout setLocationsPanelLayout = new GroupLayout(setLocationsPanel);
         setLocationsPanel.setLayout(setLocationsPanelLayout);
         setLocationsPanelLayout.setHorizontalGroup(
-            setLocationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(setLocationsPanelLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(setLocationsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
-            .addGroup(setLocationsPanelLayout.createSequentialGroup()
-                .addGap(144, 144, 144)
-                .addComponent(setLocationsField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(startWithLocationsButton)
-                .addGap(18, 18, 18))
+                setLocationsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(setLocationsPanelLayout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(setLocationsLabel, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(40, Short.MAX_VALUE))
+                        .addGroup(GroupLayout.Alignment.TRAILING, setLocationsPanelLayout.createSequentialGroup()
+                                .addContainerGap(50, Short.MAX_VALUE)
+                                .addComponent(decreaseLocationsButton)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(setLocationsField, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(increaseLocationsButton)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(startWithLocationsButton)
+                                .addGap(50, 50, 50))
         );
         setLocationsPanelLayout.setVerticalGroup(
-            setLocationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(setLocationsPanelLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(setLocationsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(setLocationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(setLocationsField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startWithLocationsButton))
-                .addGap(27, 27, 27))
+                setLocationsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(setLocationsPanelLayout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(setLocationsLabel, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(setLocationsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(decreaseLocationsButton)
+                                        .addComponent(setLocationsField, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(increaseLocationsButton)
+                                        .addComponent(startWithLocationsButton))
+                                .addContainerGap(27, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout setLocationsFrameLayout = new javax.swing.GroupLayout(setLocationsFrame.getContentPane());
+        // Frame Layout
+        setLocationsFrame = new JFrame();
+        GroupLayout setLocationsFrameLayout = new GroupLayout(setLocationsFrame.getContentPane());
         setLocationsFrame.getContentPane().setLayout(setLocationsFrameLayout);
         setLocationsFrameLayout.setHorizontalGroup(
-            setLocationsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(setLocationsFrameLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(setLocationsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                setLocationsFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(setLocationsFrameLayout.createSequentialGroup()
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(setLocationsPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         setLocationsFrameLayout.setVerticalGroup(
-            setLocationsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(setLocationsFrameLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(setLocationsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                setLocationsFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(setLocationsFrameLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(setLocationsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
+
+        // Adjust frame size
+        setLocationsPanel.setPreferredSize(setLocationsPanel.getPreferredSize());
+        setLocationsFrame.pack();
+        setLocationsFrame.setSize(setLocationsFrame.getPreferredSize().width, setLocationsFrame.getPreferredSize().height);
+
+
+
+
+
 
         levelUpLabel.setText("Какой параметр улучшить?");
 
@@ -1165,7 +1226,19 @@ public class GUI extends javax.swing.JFrame {
     }
 
     private void enterNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterNameFieldActionPerformed
-        // TODO add your handling code here:
+      //  public void playMusic() {
+            try {
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("resources/final.mp3"));
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioStream);
+                clip.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+
     }//GEN-LAST:event_enterNameFieldActionPerformed
 
     private void endGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endGameButtonActionPerformed
@@ -1232,8 +1305,18 @@ public class GUI extends javax.swing.JFrame {
     private void closeCantUseItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeCantUseItemButtonActionPerformed
         cantUseItemDialog.dispose();
     }//GEN-LAST:event_closeCantUseItemButtonActionPerformed
+    private void increaseLocationsButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        locationCount++;
+        setLocationsField.setText(String.valueOf(locationCount));
+    }
 
-    private void startWithLocationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startWithLocationsButtonActionPerformed
+    private void decreaseLocationsButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        if (locationCount > 1) {
+            locationCount--;
+            setLocationsField.setText(String.valueOf(locationCount));
+        }
+    }
+    private void ithLocationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startWithLocationsButtonActionPerformed
         //fight.reset(fight.setEnemies());
         String text = setLocationsField.getText();
         try {
@@ -1372,6 +1455,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel experinceTitleLabel;
     public static javax.swing.JFrame fightFrame;
     private javax.swing.JLabel fightLabel;
+    private byte[] audioBytes;
     public static javax.swing.JPanel fightPanel;
     private javax.swing.JRadioButton firstItemButton;
     private javax.swing.JRadioButton healthButton;
@@ -1415,7 +1499,16 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel thirdItemButton;
     private javax.swing.JLabel turnLabel;
     private javax.swing.JLabel unavailableItemLabel;
+    private JButton playButton;
     private javax.swing.JButton useItemButton;
     private javax.swing.JLabel victoryLabel;
+    private int locationCount = 2; // initial number of locations
+
+    // private JLabel setLocationsLabel;
+   // private JTextField setLocationsField;
+    private JButton increaseLocationsButton;
+    private JButton decreaseLocationsButton;
+
+
     // End of variables declaration//GEN-END:variables
 }

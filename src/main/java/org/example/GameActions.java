@@ -130,12 +130,12 @@ public class GameActions {
                     enemy.setDamage(30);
                     enemy.setMaxHealth(100);
                 }
-                case "Liu Kang" -> {
+                case "Milina" -> {
                     enemy.setLevel(1);
                     enemy.setDamage(20);
                     enemy.setMaxHealth(70);
                 }
-                case "Baraka" -> {
+                case "Kitana" -> {
                     enemy.setLevel(1);
                     enemy.setDamage(12);
                     enemy.setMaxHealth(100);

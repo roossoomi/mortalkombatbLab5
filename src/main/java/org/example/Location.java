@@ -32,11 +32,11 @@ public class Location {
             switch (k) {
                 case 0 -> {
                     enemy = fullEnemiesList[0];
-                    enemy.setIcon("baraka.gif");
+                    enemy.setIcon("kitana.gif");
                 }
                 case 1 -> {
                     enemy = fullEnemiesList[1];
-                    enemy.setIcon("liu_kang.gif");
+                    enemy.setIcon("milina.gif");
                 }
                 case 2 -> {
                     enemy = fullEnemiesList[2];
